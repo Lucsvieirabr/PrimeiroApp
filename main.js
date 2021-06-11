@@ -36,8 +36,15 @@ function listarTarefas() {
 }
 
 function ButtonaddTask() {
-    let input = document.getElementById("newTask");
-    addtask(input.value);
+    let input = document.getElementById("newTask").value;
+    tarefas.push({
+
+        texto: input,
+        state: false,
+        arquivada: false
+
+    })
+    addtask(input);
 
 
 }
