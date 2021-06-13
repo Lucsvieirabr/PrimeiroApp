@@ -15,6 +15,20 @@ var tarefas = [{
     }
 ];
 
+function SaveArrayDatas(KeytoSave, Content) {
+
+    if (localStorage[KeytoSave] === undefined) {
+        let Array = [Content]
+        localStorage.setItem(KeytoSave, JSON.stringify(Array))
+        return
+    }
+    let Array = JSON.parse(localStorage[KeytoSave])
+    Array.push(Content)
+    localStorage.setItem(KeytoSave, JSON.stringify(Array))
+
+}
+
+
 function addtask(content, ischecked) {
     let checkstate = ischecked || false
     let ul = document.getElementById('tarefas');
@@ -28,8 +42,11 @@ function addtask(content, ischecked) {
 }
 
 function listarTarefas() {
-    tarefas.forEach((t) => {
-        addtask(t.texto, t.state);
+
+    if (localStorage['tasks'] === undefined) return
+    let Array = JSON.parse(localStorage['tasks'])
+    Array.forEach((a) => {
+        addtask(a.texto, a.state);
 
 
     })
@@ -37,16 +54,25 @@ function listarTarefas() {
 
 function ButtonaddTask() {
     let input = document.getElementById("newTask").value;
-    tarefas.push({
-
+    if (localStorage['tasks'] === undefined) {
+        let Array = [{
+            texto: input,
+            state: false,
+            arquivada: false
+        }]
+        localStorage.setItem('tasks', JSON.stringify(Array))
+        addtask(input)
+        return
+    }
+    let Array = JSON.parse(localStorage['tasks'])
+    Array.push({
         texto: input,
         state: false,
         arquivada: false
-
     })
-    addtask(input);
-
-
+    localStorage.setItem('tasks', JSON.stringify(Array))
+    addtask(input)
+    return
 }
 
 function docReady(fn) {
