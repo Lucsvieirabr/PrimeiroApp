@@ -15,6 +15,21 @@ var tarefas = [{
     }
 ];
 
+function changeState(content, state) {
+
+    let Array = JSON.parse(localStorage['tasks'])
+    Array.forEach((a) => {
+        if (a.texto === content) {
+            a.state = state
+            localStorage.setItem('tasks', JSON.stringify(Array))
+            return
+
+        }
+
+
+    })
+}
+
 function SaveArrayDatas(KeytoSave, Content) {
 
     if (localStorage[KeytoSave] === undefined) {
@@ -36,9 +51,12 @@ function addtask(content, ischecked) {
     let checkbox = document.createElement('input')
     checkbox.setAttribute('type', 'checkbox')
     checkbox.checked = checkstate
+    checkbox.setAttribute('onclick', 'changeState(content, checkbox.checked)')
+    checkbox.onclick = function() { changeState(content, checkbox.checked) };
     li.append(checkbox)
     li.append(content)
     ul.append(li)
+
 }
 
 function listarTarefas() {
