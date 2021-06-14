@@ -1,20 +1,3 @@
-var tarefas = [{
-        texto: 'Socar o rocha',
-        state: true,
-        arquivada: false
-    },
-    {
-        texto: 'Ver no Diarinho se o cara foi preso',
-        state: false,
-        arquivada: false
-    },
-    {
-        texto: 'Olhar o valor da shibacoin',
-        state: false,
-        arquivada: false
-    }
-];
-
 function changeState(content, state) {
 
     let Array = JSON.parse(localStorage['tasks'])
