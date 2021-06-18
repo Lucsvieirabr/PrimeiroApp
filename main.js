@@ -55,6 +55,7 @@ function listarTarefas() {
 
 function ButtonaddTask() {
     let input = document.getElementById("newTask").value;
+    if (input == "") return alert("Tarefa vazia !!!")
     if (localStorage['tasks'] === undefined) {
         let Array = [{
             texto: input,
@@ -63,6 +64,7 @@ function ButtonaddTask() {
         }]
         localStorage.setItem('tasks', JSON.stringify(Array))
         addtask(input)
+        document.getElementById("newTask").value = ""
         return
     }
     let Array = JSON.parse(localStorage['tasks'])
@@ -73,6 +75,7 @@ function ButtonaddTask() {
     })
     localStorage.setItem('tasks', JSON.stringify(Array))
     addtask(input)
+    document.getElementById("newTask").value = ""
     return
 }
 
