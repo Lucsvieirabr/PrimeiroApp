@@ -1,4 +1,5 @@
-var id = localStorage.getItem('count') || 0;
+var id = localStorage['count'] || 0;
+id = JSON.parse(id)
 
 function changeState(content, state) {
 
@@ -59,7 +60,7 @@ function DeleteTask(count) {
             return Array.splice(count);
         }
     })
-    if (Array.length === 0) id = 0
+    if (Array.length === 0) localStorage.setItem('count', JSON.stringify(0))
     localStorage.setItem('tasks', JSON.stringify(Array))
     listarTarefas()
 
@@ -87,7 +88,8 @@ function ButtonaddTask() {
             arquivada: false,
             id: id
         }]
-        id += 1
+        id = +1
+        localStorage.setItem('count', JSON.stringify(id))
         localStorage.setItem('tasks', JSON.stringify(Array))
         addtask(input, undefined, id)
         document.getElementById("newTask").value = ""
@@ -101,6 +103,7 @@ function ButtonaddTask() {
         id: id
     })
     id += 1
+    localStorage.setItem('count', JSON.stringify(id))
     localStorage.setItem('tasks', JSON.stringify(Array))
     addtask(input, undefined, id)
     document.getElementById("newTask").value = ""
