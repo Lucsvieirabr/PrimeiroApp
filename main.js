@@ -1,3 +1,5 @@
+var id = localStorage.getItem('count') || 0;
+
 function changeState(content, state) {
 
     let Array = JSON.parse(localStorage['tasks'])
@@ -27,27 +29,49 @@ function SaveArrayDatas(KeytoSave, Content) {
 }
 
 
-function addtask(content, ischecked) {
+function addtask(content, ischecked, count) {
     let checkstate = ischecked || false
     let ul = document.getElementById('tarefas');
     let li = document.createElement('li')
+    let delbutton = document.createElement('button')
+    delbutton.setAttribute('class', 'DelButonn')
+    delbutton.setAttribute('onclick', `DeleteTask(${count})`)
+    delbutton.onclick = function() { DeleteTask(count) }
+    delbutton.innerHTML = '&#10006;'
     let checkbox = document.createElement('input')
     checkbox.setAttribute('type', 'checkbox')
     checkbox.checked = checkstate
-    checkbox.setAttribute('onclick', 'changeState(content, checkbox.checked)')
     checkbox.onclick = function() { changeState(content, checkbox.checked) };
+    li.setAttribute("id", `${count}`)
     li.append(checkbox)
     li.append(content)
+    li.append(delbutton)
     ul.append(li)
 
 }
 
-function listarTarefas() {
+function DeleteTask(count) {
 
+    let Array = JSON.parse(localStorage['tasks'])
+    Array.forEach((a) => {
+        if (a.id === count) {
+            if (count === 1) return Array.shift()
+            return Array.splice(count);
+        }
+    })
+    if (Array.length === 0) id = 0
+    localStorage.setItem('tasks', JSON.stringify(Array))
+    listarTarefas()
+
+}
+
+function listarTarefas() {
+    let ul = document.getElementById('tarefas')
+    ul.innerHTML = ""
     if (localStorage['tasks'] === undefined) return
     let Array = JSON.parse(localStorage['tasks'])
     Array.forEach((a) => {
-        addtask(a.texto, a.state);
+        addtask(a.texto, a.state, a.id);
 
 
     })
@@ -60,10 +84,12 @@ function ButtonaddTask() {
         let Array = [{
             texto: input,
             state: false,
-            arquivada: false
+            arquivada: false,
+            id: id
         }]
+        id += 1
         localStorage.setItem('tasks', JSON.stringify(Array))
-        addtask(input)
+        addtask(input, undefined, id)
         document.getElementById("newTask").value = ""
         return
     }
@@ -71,10 +97,12 @@ function ButtonaddTask() {
     Array.push({
         texto: input,
         state: false,
-        arquivada: false
+        arquivada: false,
+        id: id
     })
+    id += 1
     localStorage.setItem('tasks', JSON.stringify(Array))
-    addtask(input)
+    addtask(input, undefined, id)
     document.getElementById("newTask").value = ""
     return
 }
